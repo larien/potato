@@ -10,6 +10,10 @@ unit-test:
 	go test -v ./...
 
 coverage:
+	@echo "Calculating coverage..."
+	@scripts/coverage.sh
+
+profile:
 	@echo "Generating coverage report..."
 	go test -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
