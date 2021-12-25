@@ -23,4 +23,10 @@
 
 ## Learning topics
 
-1. Understanding the HTTP server implementation
+1. Receive an answer from an endpoint
+   - Understanding the HTTP server implementation
+2. Run tests locally
+   - Table driven tests
+   - httptest
+   - Makefile
+   - go mod
