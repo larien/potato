@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 COV_THRESHOLD: 0
 
 echo "Running coverage tests..."
