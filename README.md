@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] 1. Receive an answer from an endpoint
+- [X] 1. Receive an answer from an endpoint
 - [ ] 2. Run tests locally
 - [ ] 3. Run app locally
 - [ ] 4. Deploy application
@@ -19,3 +19,8 @@
 - [ ] ?. Prevent other services from explosion
 - [ ] ?. Enable profiling
 - [ ] ?. Improve response performance
+
+
+## Learning topics
+
+1. Understanding the HTTP server implementation
