@@ -12,7 +12,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 6. Create router
 - [X] 7. Expose CRUD endpoints
 - [X] 8. Certify server health
-- [ ] 9. Get parameters from request
+- [X] 9. Get parameters from request
 - [ ] 10. Isolate business logic
 - [ ] 11. Store data
 - [ ] 12. Enable admin permissions
@@ -55,3 +55,5 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - HTTP methods, requests, responses
 8. Certify server health
    - Healthcheck
+9. Get parameters from request
+   - Query params

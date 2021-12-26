@@ -8,12 +8,6 @@ import (
 
 var Routes = router.Routes{
 	{
-		Name:    "GetPotato",
-		Path:    "/potato",
-		Method:  http.MethodGet,
-		Handler: GetPotato,
-	},
-	{
 		Name:    "GetPotatos",
 		Path:    "/potatos",
 		Method:  http.MethodGet,
