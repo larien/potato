@@ -30,11 +30,3 @@ jobs:
         run: make test
       - name: coverage
         run: make coverage
-      - name: Trigger next workflow
-        if: success()
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
-          repository: ${{ github.repository }}
-          event-type: trigger-workflow-2
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

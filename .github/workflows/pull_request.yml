@@ -1,11 +1,10 @@
 name: pull_request
 
 on:
-  repository_dispatch:
-    types: [trigger-workflow-2]
-    branches-ignore:
-      - main
-
+  workflow_run:
+    workflows: ["code quality"]
+    types:
+      - completed
 jobs:
   publish:
     runs-on: ubuntu-latest
