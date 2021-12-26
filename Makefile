@@ -32,4 +32,4 @@ build:
 
 run:
 	@echo "Running app..."
-	go run main.go -race
+	go run main.go -config config/config

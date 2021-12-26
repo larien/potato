@@ -1,12 +1,14 @@
 # potato
 
+This project is a Go skelethon to be used to develop new microservices. I'm still not sure what I'm gonna do with this in the future; the goal for now is to finish it and write down all the topics to be learn in order to understand what takes to build a Go microservice. Enjoy!
+
 ## TODO
 
 - [X] 1. Receive an answer from an endpoint
 - [X] 2. Run tests locally
 - [X] 3. Run app locally
 - [X] 4. Submit aplication to container registry
-- [ ] 5. Improve configuration
+- [X] 5. Improve configuration
 - [ ] 6. Create router
 - [ ] 7. Expose CRUD endpoints
 - [ ] 8. Certify server health
@@ -19,7 +21,6 @@
 - [ ] ?. Prevent other services from explosion
 - [ ] ?. Enable profiling
 - [ ] ?. Improve response performance
-
 
 ## Learning topics
 
@@ -38,3 +39,8 @@
    - Docker
    - YAML
    - lint
+5. Improve configuration
+   - Configuration files
+   - Viper
+   - YAML/TOML/JSON
+   - flag package
