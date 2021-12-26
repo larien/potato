@@ -30,3 +30,16 @@ jobs:
         run: make test
       - name: coverage
         run: make coverage
+  
+  trigger:
+    name: trigger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger next workflow
+        if: success()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_GHA_PAT }}
+          repository: ${{ github.repository }}
+          event-type: trigger-workflow-2
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
