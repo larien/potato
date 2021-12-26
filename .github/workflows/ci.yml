@@ -1,0 +1,54 @@
+name: ci
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - main
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: latest
+          only-new-issues: true
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: enable permissions
+        run: chmod 777 -R scripts/
+      - name: go test
+        run: make test
+      - name: coverage
+        run: make coverage
+
+  publish:
+    needs:
+      - tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+
+    - name: Build the Docker image
+      env:
+        CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+      run: |
+        docker build . --tag ghcr.io/larien/potato:dev
+        docker push ghcr.io/larien/potato:dev
