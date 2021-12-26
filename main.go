@@ -1,22 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/larien/potato/config"
 	"github.com/larien/potato/handler"
 )
 
-const (
-	port = ":8080"
-)
-
 func main() {
-	log.Println("starting server in port", port)
+	c := config.New()
+
+	log.Println("starting server in port", c.Server.Port)
 
 	http.HandleFunc("/potato", handler.V1GetPotato)
 
-	if err := http.ListenAndServe(port, nil); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", c.Server.Port), nil); err != nil {
 		log.Fatal(err)
 	}
 }
