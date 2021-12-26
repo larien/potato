@@ -41,7 +41,7 @@ func GetPotatos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(response))
+	_, _ = w.Write([]byte(response))
 }
 
 func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,7 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte(`{"error": "potato not found"}`))
+		_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 		return
 	}
 
@@ -63,7 +63,7 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(response))
+	_, _ = w.Write([]byte(response))
 }
 
 func CreatePotato(w http.ResponseWriter, r *http.Request) {
@@ -98,7 +98,7 @@ func CreatePotato(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(response))
+	_, _ = w.Write([]byte(response))
 }
 
 func DeletePotato(w http.ResponseWriter, r *http.Request) {
