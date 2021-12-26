@@ -1,4 +1,4 @@
-# go-skelethon
+# potato
 
 ## TODO
 
@@ -30,3 +30,10 @@
    - httptest
    - Makefile
    - go mod
+3. Run app locally
+   - N/A
+4. Deploy application
+   - Container registry
+   - GitHub Actions
+   - Docker
+   - YAML

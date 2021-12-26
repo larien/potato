@@ -1,3 +1,3 @@
-module github.com/larien/go-skelethon
+module github.com/larien/potato
 
 go 1.17

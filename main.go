@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/larien/go-skelethon/handler"
+	"github.com/larien/potato/handler"
 )
 
 const (
