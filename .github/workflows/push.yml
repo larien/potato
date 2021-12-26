@@ -5,7 +5,6 @@ on:
     branches:
       - main
   pull_request:
-    
 
 jobs:
   publish:
@@ -25,10 +24,5 @@ jobs:
       env:
         CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
       run: |
-        IMAGE_ID=ghcr.io/${{ github.actor }}/${{ matrix.name }}
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker tag ${{ matrix.name }} $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+        docker build . --tag ghcr.io/larien/potato:latest
+        docker push ghcr.io/larien/potato:latest
