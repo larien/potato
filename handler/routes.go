@@ -13,4 +13,28 @@ var Routes = router.Routes{
 		Method:  http.MethodGet,
 		Handler: GetPotato,
 	},
+	{
+		Name:    "GetPotatos",
+		Path:    "/potatos",
+		Method:  http.MethodGet,
+		Handler: GetPotatos,
+	},
+	{
+		Name:    "GetPotatoByID",
+		Path:    "/potatos/{id}",
+		Method:  http.MethodGet,
+		Handler: GetPotatoByID,
+	},
+	{
+		Name:    "CreatePotato",
+		Path:    "/potatos",
+		Method:  http.MethodPost,
+		Handler: CreatePotato,
+	},
+	{
+		Name:    "DeletePotato",
+		Path:    "/potatos/{id}",
+		Method:  http.MethodDelete,
+		Handler: DeletePotato,
+	},
 }

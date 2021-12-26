@@ -10,7 +10,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 4. Submit aplication to container registry
 - [X] 5. Improve configuration
 - [X] 6. Create router
-- [ ] 7. Expose CRUD endpoints
+- [X] 7. Expose CRUD endpoints
 - [ ] 8. Certify server health
 - [ ] 9. Get parameters from request
 - [ ] 10. Isolate business logic
@@ -48,3 +48,4 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - Mux
    - Handler
    - Why and how to build a router
+   - Obtain route variables
