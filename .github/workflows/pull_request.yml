@@ -2,9 +2,11 @@ name: pull_request
 
 on:
   workflow_run:
-    workflows: ["code quality"]
+    workflows:
+      - "code_quality"
     types:
       - completed
+
 jobs:
   publish:
     runs-on: ubuntu-latest
