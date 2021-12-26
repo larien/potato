@@ -1,7 +1,8 @@
 name: pull_request
 
 on:
-  push:
+  repository_dispatch:
+    types: [trigger-workflow-2]
     branches-ignore:
       - main
 
@@ -24,5 +25,4 @@ jobs:
         CONTAINER_REGISTRY_TOKEN: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
       run: |
         docker build . --tag ghcr.io/larien/potato:dev
-        docker run ghcr.io/larien/potato:dev
         docker push ghcr.io/larien/potato:dev
