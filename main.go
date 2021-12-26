@@ -13,11 +13,11 @@ import (
 func main() {
 	c := config.New()
 
-	router.New(handler.Routes)
+	r := router.New(handler.Routes)
 
 	log.Println("starting server in port", c.Server.Port)
 
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", c.Server.Port), nil); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", c.Server.Port), r); err != nil {
 		log.Fatal(err)
 	}
 }

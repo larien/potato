@@ -5,8 +5,8 @@ import "net/http"
 type Routes []Route
 
 type Route struct {
-	Pattern string
-	Version string
+	Name    string
+	Path    string
 	Method  string
 	Handler http.HandlerFunc
 }

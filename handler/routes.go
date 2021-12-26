@@ -8,9 +8,9 @@ import (
 
 var Routes = router.Routes{
 	{
-		Pattern: "/potato",
-		Version: "v1",
+		Name:    "GetPotato",
+		Path:    "/potato",
 		Method:  http.MethodGet,
-		Handler: V1GetPotato,
+		Handler: GetPotato,
 	},
 }

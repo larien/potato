@@ -2,7 +2,7 @@ package handler
 
 import "net/http"
 
-func V1GetPotato(w http.ResponseWriter, r *http.Request) {
+func GetPotato(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == http.MethodGet {
 		_, _ = w.Write([]byte("{\"content\": \"potato\"}"))

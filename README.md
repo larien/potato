@@ -9,7 +9,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 3. Run app locally
 - [X] 4. Submit aplication to container registry
 - [X] 5. Improve configuration
-- [ ] 6. Create router
+- [X] 6. Create router
 - [ ] 7. Expose CRUD endpoints
 - [ ] 8. Certify server health
 - [ ] 9. Get parameters from request
@@ -44,3 +44,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - Viper
    - YAML/TOML/JSON
    - flag package
+6. Create router
+   - Mux
+   - Handler
+   - Why and how to build a router

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestV1GetPotato(t *testing.T) {
+func TestGetPotato(t *testing.T) {
 	type args struct {
 		r *http.Request
 	}
@@ -36,12 +36,12 @@ func TestV1GetPotato(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()
-			V1GetPotato(w, tt.args.r)
+			GetPotato(w, tt.args.r)
 			if tt.wantCode != w.Code {
-				t.Errorf("V1GetPotato() = %v, want %v", w.Code, tt.wantCode)
+				t.Errorf("GetPotato() = %v, want %v", w.Code, tt.wantCode)
 			}
 			if tt.wantBody != w.Body.String() {
-				t.Errorf("V1GetPotato() = %v, want %v", w.Body.String(), tt.wantBody)
+				t.Errorf("GetPotato() = %v, want %v", w.Body.String(), tt.wantBody)
 			}
 		})
 	}
