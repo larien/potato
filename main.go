@@ -16,5 +16,7 @@ func main() {
 
 	http.HandleFunc("/potato", handler.V1GetPotato)
 
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(err)
+	}
 }

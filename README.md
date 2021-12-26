@@ -5,7 +5,7 @@
 - [X] 1. Receive an answer from an endpoint
 - [X] 2. Run tests locally
 - [X] 3. Run app locally
-- [ ] 4. Deploy application
+- [X] 4. Submit aplication to container registry
 - [ ] 5. Improve configuration
 - [ ] 6. Create router
 - [ ] 7. Expose CRUD endpoints
@@ -37,3 +37,4 @@
    - GitHub Actions
    - Docker
    - YAML
+   - lint

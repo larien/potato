@@ -9,5 +9,5 @@ func V1GetPotato(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusMethodNotAllowed)
-	w.Write([]byte("{\"error\": \"method not allowed\"}"))
+	_, _ = w.Write([]byte("{\"error\": \"method not allowed\"}"))
 }
