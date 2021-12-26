@@ -7,14 +7,15 @@ import (
 
 	"github.com/larien/potato/config"
 	"github.com/larien/potato/handler"
+	"github.com/larien/potato/utils/router"
 )
 
 func main() {
 	c := config.New()
 
-	log.Println("starting server in port", c.Server.Port)
+	router.New(handler.Routes)
 
-	http.HandleFunc("/potato", handler.V1GetPotato)
+	log.Println("starting server in port", c.Server.Port)
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", c.Server.Port), nil); err != nil {
 		log.Fatal(err)
