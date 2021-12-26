@@ -30,11 +30,6 @@ jobs:
         run: make test
       - name: coverage
         run: make coverage
-  
-  trigger:
-    name: trigger
-    runs-on: ubuntu-latest
-    steps:
       - name: Trigger next workflow
         if: success()
         uses: peter-evans/repository-dispatch@v1
