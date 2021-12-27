@@ -13,7 +13,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 7. Expose CRUD endpoints
 - [X] 8. Certify server health
 - [X] 9. Get parameters from request
-- [ ] 10. Isolate business logic
+- [X] 10. Isolate business logic
 - [ ] 11. Store data
 - [ ] 12. Enable admin permissions
 - [ ] 13. Enable server debugging
@@ -22,7 +22,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [ ] ?. Enable profiling
 - [ ] ?. Improve response performance
 
-## Learning topics
+## Relevant topics
 
 1. Receive an answer from an endpoint
    - Understanding the HTTP server implementation
@@ -57,3 +57,25 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - Healthcheck
 9. Get parameters from request
    - Query params
+10. Isolate business logic
+   - Interfaces
+   - Mocking
+11. Store data
+   - Repository pattern
+   - Dependency injection
+12. Enable admin permissions
+   - Admin route
+   - Middlewares
+   - Authorization
+   - Authentication
+13. Enable server debugging
+   - Logging
+14. Monitor requests
+   - Tracing
+?. Prevent other services from explosion
+   - Circuit breaker
+?. Enable profiling
+   -  pprof
+   -  profiling
+?. Improve response performance
+   - cache
