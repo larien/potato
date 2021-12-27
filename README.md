@@ -22,7 +22,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [ ] ?. Enable profiling
 - [ ] ?. Improve response performance
 
-## Learning topics
+## Relevant topics
 
 1. Receive an answer from an endpoint
    - Understanding the HTTP server implementation
@@ -57,3 +57,19 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - Healthcheck
 9. Get parameters from request
    - Query params
+10. Isolate business logic
+   - Interfaces
+   - Mocking
+11. Store data
+   - Repository pattern
+   - Dependency injection
+12. Enable admin permissions
+   - Admin route
+   - Middlewares
+   - Authorization
+   - Authentication
+13. Enable server debugging
+   - profiling
+   - pprof
+14. Monitor requests
+   - Logging
