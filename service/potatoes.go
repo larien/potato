@@ -1,4 +1,4 @@
-package business
+package service
 
 import (
 	"errors"

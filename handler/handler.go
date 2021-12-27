@@ -7,18 +7,18 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/larien/potato/business"
+	"github.com/larien/potato/service"
 	"github.com/larien/potato/utils/request/params"
 )
 
 var (
-	businessNew = business.New
+	serviceNew = service.New
 )
 
 func GetPotatoes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	potatoes, err := businessNew().List(params.New(r))
+	potatoes, err := serviceNew().List(params.New(r))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(`{"error": "could not list"}`))
@@ -35,7 +35,7 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 
 	id := mux.Vars(r)["id"]
 
-	potato := businessNew().Get(id)
+	potato := serviceNew().Get(id)
 	if potato.Name == "" {
 		w.WriteHeader(http.StatusNotFound)
 		_, _ = w.Write([]byte(`{"error": "potato not found"}`))
@@ -57,8 +57,8 @@ func CreatePotato(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := businessNew().Create(potato.toPotato()); err != nil {
-		if errors.Is(err, business.ErrAlreadyExists) {
+	if err := serviceNew().Create(potato.toPotato()); err != nil {
+		if errors.Is(err, service.ErrAlreadyExists) {
 			w.WriteHeader(http.StatusBadRequest)
 			_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))
 			return
@@ -86,9 +86,9 @@ func UpdatePotato(w http.ResponseWriter, r *http.Request) {
 	}
 	potato.Name = id
 
-	if err := businessNew().Update(potato.toPotato()); err != nil {
+	if err := serviceNew().Update(potato.toPotato()); err != nil {
 		w.Header().Set("Content-Type", "application/json")
-		if errors.Is(err, business.ErrNotFound) {
+		if errors.Is(err, service.ErrNotFound) {
 			w.WriteHeader(http.StatusNotFound)
 			_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 			return
@@ -102,9 +102,9 @@ func UpdatePotato(w http.ResponseWriter, r *http.Request) {
 func DeletePotato(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	if err := businessNew().Delete(id); err != nil {
+	if err := serviceNew().Delete(id); err != nil {
 		w.Header().Set("Content-Type", "application/json")
-		if errors.Is(err, business.ErrNotFound) {
+		if errors.Is(err, service.ErrNotFound) {
 			w.WriteHeader(http.StatusNotFound)
 			_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 			return

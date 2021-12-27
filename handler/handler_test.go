@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/larien/potato/business"
+	"github.com/larien/potato/service"
 	"github.com/larien/potato/utils/request/params"
 )
 
@@ -20,7 +20,7 @@ func TestGetPotatoes(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		potatoes business.Potatoes
+		potatoes service.Potatoes
 		wantCode int
 		wantBody string
 	}{
@@ -32,7 +32,7 @@ func TestGetPotatoes(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnList: func(params params.QueryParams) ([]business.Potato, error) {
+				fnList: func(params params.QueryParams) ([]service.Potato, error) {
 					return nil, errors.New("failed to list")
 				},
 			},
@@ -47,8 +47,8 @@ func TestGetPotatoes(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnList: func(params params.QueryParams) ([]business.Potato, error) {
-					return []business.Potato{
+				fnList: func(params params.QueryParams) ([]service.Potato, error) {
+					return []service.Potato{
 						{
 							Name: "potato1",
 						},
@@ -61,7 +61,7 @@ func TestGetPotatoes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			businessNew = func() business.Potatoes {
+			serviceNew = func() service.Potatoes {
 				return tt.potatoes
 			}
 			w := httptest.NewRecorder()
@@ -83,7 +83,7 @@ func TestGetPotatoByID(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		potatoes business.Potatoes
+		potatoes service.Potatoes
 		wantCode int
 		wantBody string
 	}{
@@ -93,8 +93,8 @@ func TestGetPotatoByID(t *testing.T) {
 				r: httptest.NewRequest(http.MethodGet, "/potatoes/potato1", nil),
 			},
 			potatoes: mockPotatoes{
-				fnGet: func(id string) business.Potato {
-					return business.Potato{}
+				fnGet: func(id string) service.Potato {
+					return service.Potato{}
 				},
 			},
 			wantCode: 404,
@@ -106,8 +106,8 @@ func TestGetPotatoByID(t *testing.T) {
 				r: httptest.NewRequest(http.MethodGet, "/potatoes/potato1", nil),
 			},
 			potatoes: mockPotatoes{
-				fnGet: func(id string) business.Potato {
-					return business.Potato{
+				fnGet: func(id string) service.Potato {
+					return service.Potato{
 						Name: "potato1",
 					}
 				},
@@ -118,7 +118,7 @@ func TestGetPotatoByID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			businessNew = func() business.Potatoes {
+			serviceNew = func() service.Potatoes {
 				return tt.potatoes
 			}
 			w := httptest.NewRecorder()
@@ -140,7 +140,7 @@ func TestCreatePotato(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		potatoes business.Potatoes
+		potatoes service.Potatoes
 		wantCode int
 		wantBody string
 	}{
@@ -166,8 +166,8 @@ func TestCreatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnCreate: func(potato business.Potato) error {
-					return business.ErrAlreadyExists
+				fnCreate: func(potato service.Potato) error {
+					return service.ErrAlreadyExists
 				},
 			},
 			wantCode: 400,
@@ -183,7 +183,7 @@ func TestCreatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnCreate: func(potato business.Potato) error {
+				fnCreate: func(potato service.Potato) error {
 					return errors.New("failed to create")
 				},
 			},
@@ -200,7 +200,7 @@ func TestCreatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnCreate: func(potato business.Potato) error {
+				fnCreate: func(potato service.Potato) error {
 					return nil
 				},
 			},
@@ -210,7 +210,7 @@ func TestCreatePotato(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			businessNew = func() business.Potatoes {
+			serviceNew = func() service.Potatoes {
 				return tt.potatoes
 			}
 			w := httptest.NewRecorder()
@@ -232,7 +232,7 @@ func TestUpdatePotato(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		potatoes business.Potatoes
+		potatoes service.Potatoes
 		wantCode int
 		wantBody string
 	}{
@@ -258,8 +258,8 @@ func TestUpdatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnUpdate: func(potato business.Potato) error {
-					return business.ErrNotFound
+				fnUpdate: func(potato service.Potato) error {
+					return service.ErrNotFound
 				},
 			},
 			wantCode: 404,
@@ -275,7 +275,7 @@ func TestUpdatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnUpdate: func(potato business.Potato) error {
+				fnUpdate: func(potato service.Potato) error {
 					return errors.New("failed to update")
 				},
 			},
@@ -292,7 +292,7 @@ func TestUpdatePotato(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnUpdate: func(potato business.Potato) error {
+				fnUpdate: func(potato service.Potato) error {
 					return nil
 				},
 			},
@@ -301,7 +301,7 @@ func TestUpdatePotato(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			businessNew = func() business.Potatoes {
+			serviceNew = func() service.Potatoes {
 				return tt.potatoes
 			}
 			w := httptest.NewRecorder()
@@ -323,7 +323,7 @@ func TestDeletePotato(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		potatoes business.Potatoes
+		potatoes service.Potatoes
 		wantCode int
 		wantBody string
 	}{
@@ -336,7 +336,7 @@ func TestDeletePotato(t *testing.T) {
 			},
 			potatoes: mockPotatoes{
 				fnDelete: func(id string) error {
-					return business.ErrNotFound
+					return service.ErrNotFound
 				},
 			},
 			wantCode: 404,
@@ -374,7 +374,7 @@ func TestDeletePotato(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			businessNew = func() business.Potatoes {
+			serviceNew = func() service.Potatoes {
 				return tt.potatoes
 			}
 			w := httptest.NewRecorder()

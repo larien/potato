@@ -1,40 +1,40 @@
 package handler
 
 import (
-	"github.com/larien/potato/business"
+	"github.com/larien/potato/service"
 	"github.com/larien/potato/utils/request/params"
 )
 
 type mockPotatoes struct {
-	fnGet    func(id string) business.Potato
-	fnList   func(params params.QueryParams) ([]business.Potato, error)
-	fnCreate func(potato business.Potato) error
-	fnUpdate func(potato business.Potato) error
+	fnGet    func(id string) service.Potato
+	fnList   func(params params.QueryParams) ([]service.Potato, error)
+	fnCreate func(potato service.Potato) error
+	fnUpdate func(potato service.Potato) error
 	fnDelete func(id string) error
 }
 
-func (m mockPotatoes) Get(id string) business.Potato {
+func (m mockPotatoes) Get(id string) service.Potato {
 	if m.fnGet == nil {
-		return business.Potato{}
+		return service.Potato{}
 	}
 	return m.fnGet(id)
 }
 
-func (m mockPotatoes) List(params params.QueryParams) ([]business.Potato, error) {
+func (m mockPotatoes) List(params params.QueryParams) ([]service.Potato, error) {
 	if m.fnList == nil {
-		return []business.Potato{}, nil
+		return []service.Potato{}, nil
 	}
 	return m.fnList(params)
 }
 
-func (m mockPotatoes) Create(potato business.Potato) error {
+func (m mockPotatoes) Create(potato service.Potato) error {
 	if m.fnCreate == nil {
 		return nil
 	}
 	return m.fnCreate(potato)
 }
 
-func (m mockPotatoes) Update(potato business.Potato) error {
+func (m mockPotatoes) Update(potato service.Potato) error {
 	if m.fnUpdate == nil {
 		return nil
 	}
