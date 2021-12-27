@@ -16,9 +16,10 @@ var (
 )
 
 func GetPotatoes(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	potatoes, err := businessNew().List(params.New(r))
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(`{"error": "could not list"}`))
 		return
@@ -30,11 +31,12 @@ func GetPotatoes(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	id := mux.Vars(r)["id"]
 
 	potato := businessNew().Get(id)
 	if potato.Name == "" {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 		return
@@ -46,16 +48,16 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreatePotato(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	var potato V1Potato
 	if err := json.NewDecoder(r.Body).Decode(&potato); err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		_, _ = w.Write([]byte(`{"error": "could not decode request body"}`))
 		return
 	}
 
 	if err := businessNew().Create(potato.toPotato()); err != nil {
-		w.Header().Set("Content-Type", "application/json")
 		if errors.Is(err, business.ErrAlreadyExists) {
 			w.WriteHeader(http.StatusBadRequest)
 			_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))

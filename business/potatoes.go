@@ -2,6 +2,7 @@ package business
 
 import (
 	"errors"
+	"log"
 	"sync"
 	"time"
 
@@ -27,7 +28,9 @@ type Potatoes interface {
 type potatoes struct{}
 
 func New() Potatoes {
-	list = make(map[string]Potato)
+	if list == nil {
+		list = make(map[string]Potato)
+	}
 	return potatoes{}
 }
 
@@ -55,10 +58,11 @@ func (p potatoes) Create(potato Potato) error {
 		return ErrAlreadyExists
 	}
 
-	list[potato.Name] = potato
-
 	potato.AddedAt = time.Now()
 	potato.LastModifiedAt = potato.AddedAt
+	list[potato.Name] = potato
+	log.Println("Created potato:", potato.Name)
+
 	return nil
 }
 
@@ -70,7 +74,10 @@ func (p potatoes) Update(potato Potato) error {
 		return ErrNotFound
 	}
 
+	potato.LastModifiedAt = time.Now()
 	list[potato.Name] = potato
+	log.Println("Updated potato:", potato.Name)
+
 	return nil
 }
 
@@ -83,6 +90,7 @@ func (p potatoes) Delete(id string) error {
 	}
 
 	delete(list, id)
+	log.Println("Deleted potato:", id)
 
 	return nil
 }

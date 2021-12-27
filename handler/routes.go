@@ -26,6 +26,12 @@ var Routes = router.Routes{
 		Handler: CreatePotato,
 	},
 	{
+		Name:    "UpdatePotato",
+		Path:    "/potatoes/{id}",
+		Method:  http.MethodPut,
+		Handler: UpdatePotato,
+	},
+	{
 		Name:    "DeletePotato",
 		Path:    "/potatoes/{id}",
 		Method:  http.MethodDelete,
