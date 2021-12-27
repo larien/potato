@@ -8,26 +8,26 @@ import (
 
 var Routes = router.Routes{
 	{
-		Name:    "GetPotatos",
-		Path:    "/potatos",
+		Name:    "GetPotatoes",
+		Path:    "/potatoes",
 		Method:  http.MethodGet,
-		Handler: GetPotatos,
+		Handler: GetPotatoes,
 	},
 	{
 		Name:    "GetPotatoByID",
-		Path:    "/potatos/{id}",
+		Path:    "/potatoes/{id}",
 		Method:  http.MethodGet,
 		Handler: GetPotatoByID,
 	},
 	{
 		Name:    "CreatePotato",
-		Path:    "/potatos",
+		Path:    "/potatoes",
 		Method:  http.MethodPost,
 		Handler: CreatePotato,
 	},
 	{
 		Name:    "DeletePotato",
-		Path:    "/potatos/{id}",
+		Path:    "/potatoes/{id}",
 		Method:  http.MethodDelete,
 		Handler: DeletePotato,
 	},
