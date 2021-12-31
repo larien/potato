@@ -14,7 +14,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 8. Certify server health
 - [X] 9. Get parameters from request
 - [X] 10. Isolate service logic
-- [ ] 11. Store data
+- [X] 11. Store data
 - [ ] 12. Enable admin permissions
 - [ ] 13. Enable server debugging
 - [ ] 14. Monitor requests
@@ -77,5 +77,6 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 ?. Enable profiling
    -  pprof
    -  profiling
+?. Implement an actual database
 ?. Improve response performance
    - cache

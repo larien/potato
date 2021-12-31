@@ -35,7 +35,12 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 
 	id := mux.Vars(r)["id"]
 
-	potato := serviceNew().Get(id)
+	potato, err := serviceNew().Get(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(`{"error": "could not get potato"}`))
+		return
+	}
 	if potato.Name == "" {
 		w.WriteHeader(http.StatusNotFound)
 		_, _ = w.Write([]byte(`{"error": "potato not found"}`))

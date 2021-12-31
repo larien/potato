@@ -14,10 +14,10 @@ func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want QueryParams
+		want Queries
 	}{
 		{
-			name: "should_return_QueryParams_with_default_values_because_no_query_params_are_provided",
+			name: "should_return_Queries_with_default_values_because_no_query_params_are_provided",
 			args: args{
 				r: &http.Request{
 					URL: &url.URL{
@@ -25,7 +25,7 @@ func TestNew(t *testing.T) {
 					},
 				},
 			},
-			want: QueryParams{
+			want: Queries{
 				Search: Search{
 					ItemsPerPage: defaultItemsPerPage,
 					Page:         defaultPage,
@@ -33,7 +33,7 @@ func TestNew(t *testing.T) {
 			},
 		},
 		{
-			name: "should_return_QueryParams_with_default_values_because_of_invalid_query_params",
+			name: "should_return_Queries_with_default_values_because_of_invalid_query_params",
 			args: args{
 				r: &http.Request{
 					URL: &url.URL{
@@ -41,7 +41,7 @@ func TestNew(t *testing.T) {
 					},
 				},
 			},
-			want: QueryParams{
+			want: Queries{
 				Search: Search{
 					ItemsPerPage: defaultItemsPerPage,
 					Page:         defaultPage,
@@ -49,7 +49,7 @@ func TestNew(t *testing.T) {
 			},
 		},
 		{
-			name: "should_return_QueryParams_with_custom_itemsperpage",
+			name: "should_return_Queries_with_custom_itemsperpage",
 			args: args{
 				r: &http.Request{
 					URL: &url.URL{
@@ -57,7 +57,7 @@ func TestNew(t *testing.T) {
 					},
 				},
 			},
-			want: QueryParams{
+			want: Queries{
 				Search: Search{
 					ItemsPerPage: 10,
 					Page:         defaultPage,
@@ -65,7 +65,7 @@ func TestNew(t *testing.T) {
 			},
 		},
 		{
-			name: "should_return_QueryParams_with_custom_page",
+			name: "should_return_Queries_with_custom_page",
 			args: args{
 				r: &http.Request{
 					URL: &url.URL{
@@ -73,7 +73,7 @@ func TestNew(t *testing.T) {
 					},
 				},
 			},
-			want: QueryParams{
+			want: Queries{
 				Search: Search{
 					ItemsPerPage: defaultItemsPerPage,
 					Page:         10,

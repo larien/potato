@@ -32,7 +32,7 @@ func TestGetPotatoes(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnList: func(params params.QueryParams) ([]service.Potato, error) {
+				fnList: func(params params.Queries) ([]service.Potato, error) {
 					return nil, errors.New("failed to list")
 				},
 			},
@@ -47,7 +47,7 @@ func TestGetPotatoes(t *testing.T) {
 				},
 			},
 			potatoes: mockPotatoes{
-				fnList: func(params params.QueryParams) ([]service.Potato, error) {
+				fnList: func(params params.Queries) ([]service.Potato, error) {
 					return []service.Potato{
 						{
 							Name: "potato1",
@@ -93,8 +93,8 @@ func TestGetPotatoByID(t *testing.T) {
 				r: httptest.NewRequest(http.MethodGet, "/potatoes/potato1", nil),
 			},
 			potatoes: mockPotatoes{
-				fnGet: func(id string) service.Potato {
-					return service.Potato{}
+				fnGet: func(id string) (service.Potato, error) {
+					return service.Potato{}, nil
 				},
 			},
 			wantCode: 404,
@@ -106,10 +106,10 @@ func TestGetPotatoByID(t *testing.T) {
 				r: httptest.NewRequest(http.MethodGet, "/potatoes/potato1", nil),
 			},
 			potatoes: mockPotatoes{
-				fnGet: func(id string) service.Potato {
+				fnGet: func(id string) (service.Potato, error) {
 					return service.Potato{
 						Name: "potato1",
-					}
+					}, nil
 				},
 			},
 			wantCode: 200,
