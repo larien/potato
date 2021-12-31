@@ -38,6 +38,9 @@ func (p potatoes) List(params params.Queries) ([]Potato, error) {
 		return nil, err
 	}
 	for _, raw := range raws {
+		if raw.Active {
+			continue
+		}
 		result = append(result, newPotato(raw))
 	}
 	return result, nil
@@ -48,6 +51,9 @@ func (p potatoes) Get(id string) (Potato, error) {
 	if err != nil {
 		return Potato{}, err
 	}
+	if !raws[id].Active {
+		return Potato{}, ErrNotFound
+	}
 	return newPotato(raws[id]), nil
 }
 
@@ -57,7 +63,8 @@ func (p potatoes) Create(potato Potato) error {
 		return err
 	}
 
-	if _, ok := raws[potato.Name]; ok {
+	existingPotato, ok := raws[potato.Name]
+	if ok && existingPotato.Active {
 		return ErrAlreadyExists
 	}
 
@@ -77,7 +84,7 @@ func (p potatoes) Update(potato Potato) error {
 	}
 
 	raw, ok := raws[potato.Name]
-	if !ok {
+	if !ok || (ok && !raw.Active) {
 		return ErrNotFound
 	}
 

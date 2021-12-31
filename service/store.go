@@ -49,7 +49,7 @@ func (s fileStore) getByIDs(ids []string) (raws, error) {
 	result := make(raws)
 	for _, raw := range list {
 		for _, id := range ids {
-			if raw.Name == id {
+			if raw.Name == id && raw.Active {
 				result[id] = raw
 			}
 		}

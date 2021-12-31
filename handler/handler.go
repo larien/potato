@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -20,6 +21,7 @@ func GetPotatoes(w http.ResponseWriter, r *http.Request) {
 
 	potatoes, err := serviceNew().List(params.New(r))
 	if err != nil {
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(`{"error": "could not list"}`))
 		return
@@ -37,6 +39,7 @@ func GetPotatoByID(w http.ResponseWriter, r *http.Request) {
 
 	potato, err := serviceNew().Get(id)
 	if err != nil {
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(`{"error": "could not get potato"}`))
 		return
@@ -57,6 +60,7 @@ func CreatePotato(w http.ResponseWriter, r *http.Request) {
 
 	var potato V1Potato
 	if err := json.NewDecoder(r.Body).Decode(&potato); err != nil {
+		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
 		_, _ = w.Write([]byte(`{"error": "could not decode request body"}`))
 		return
@@ -68,6 +72,7 @@ func CreatePotato(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))
 			return
 		}
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))
 		return
@@ -84,6 +89,7 @@ func UpdatePotato(w http.ResponseWriter, r *http.Request) {
 
 	var potato V1Potato
 	if err := json.NewDecoder(r.Body).Decode(&potato); err != nil {
+		log.Println(err)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
 		_, _ = w.Write([]byte(`{"error": "could not decode request body"}`))
@@ -98,6 +104,7 @@ func UpdatePotato(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 			return
 		}
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))
 		return
@@ -114,6 +121,7 @@ func DeletePotato(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte(`{"error": "potato not found"}`))
 			return
 		}
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, err.Error())))
 		return
