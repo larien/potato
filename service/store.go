@@ -1,19 +1,13 @@
 package service
 
 import (
-	"encoding/json"
-	"os"
+	"errors"
 
+	"github.com/larien/potato/utils/drivers/kvs"
 	"github.com/larien/potato/utils/request/params"
 )
 
-// in a regular microservice, we'd probably implement a SQL/NoSQL driver. To make things simple here,
-// let's update a file for now. Never use files as database in the real world, they are (among many disadvantages)
-// not performatic, not thread safe and not reliable.
-
-const (
-	filename = "db/potatoes.json"
-)
+var errNotFound = errors.New("not found")
 
 type store interface {
 	list(params params.Queries) (raws, error)
@@ -23,83 +17,68 @@ type store interface {
 	delete(id string) error
 }
 
-type fileStore struct{}
+type potatoStore struct {
+	kvs *kvs.KeyValueStore
+}
 
 func newStore() store {
-	return fileStore{}
+	return potatoStore{}
 }
 
-func (s fileStore) list(params params.Queries) (raws, error) {
-	var result raws
-	content, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal(content, &result); err != nil {
-		return nil, err
-	}
-	return result, nil
-}
+func (s potatoStore) list(params params.Queries) (raws, error) {
+	results := s.kvs.GetAll()
 
-func (s fileStore) getByIDs(ids []string) (raws, error) {
-	list, err := s.list(params.Queries{})
-	if err != nil {
-		return nil, err
-	}
-	result := make(raws)
-	for _, raw := range list {
-		for _, id := range ids {
-			if raw.Name == id && raw.Active {
-				result[id] = raw
-			}
+	raws := make(raws, len(results))
+	for _, result := range results {
+		r := result.(raw)
+		if !r.Active {
+			continue
 		}
+		raws[r.Name] = r
 	}
-	return result, nil
+
+	return raws, nil
 }
 
-func (s fileStore) create(raw raw) error {
-	list, err := s.list(params.Queries{})
-	if err != nil {
-		return err
-	}
-	list[raw.Name] = raw
+func (s potatoStore) getByIDs(ids []string) (raws, error) {
+	raws := make(raws, len(ids))
 
-	content, err := json.Marshal(list)
-	if err != nil {
-		return err
-	}
-
-	return os.WriteFile(filename, []byte(content), 0644)
-}
-
-func (s fileStore) update(raw raw) error {
-	list, err := s.list(params.Queries{})
-	if err != nil {
-		return err
-	}
-	for i, potato := range list {
-		if potato.Name == raw.Name {
-			list[i] = raw
+	for _, id := range ids {
+		r := s.kvs.Get(id).(raw)
+		if r.Name == "" || !r.Active {
+			return nil, errNotFound
 		}
+		raws[r.Name] = r
 	}
-	content, err := json.Marshal(list)
-	if err != nil {
-		return err
-	}
-	return os.WriteFile(filename, content, 0644)
+
+	return raws, nil
 }
 
-func (s fileStore) delete(id string) error {
-	list, err := s.list(params.Queries{})
-	if err != nil {
-		return err
+func (s potatoStore) create(raw raw) error {
+	s.kvs.Set(raw.Name, raw)
+
+	return nil
+}
+
+func (s potatoStore) update(r raw) error {
+	result := s.kvs.Get(r.Name).(raw)
+	if result.Name == "" || !result.Active {
+		return errNotFound
 	}
-	raw := list[id]
-	raw.Active = false
-	list[id] = raw
-	content, err := json.Marshal(list)
-	if err != nil {
-		return err
+
+	s.kvs.Set(r.Name, r)
+
+	return nil
+}
+
+func (s potatoStore) delete(id string) error {
+	result := s.kvs.Get(id).(raw)
+	if result.Name == "" || !result.Active {
+		return errNotFound
 	}
-	return os.WriteFile(filename, content, 0644)
+
+	result.Active = false
+	s.kvs.Set(id, result)
+
+	return nil
 }
