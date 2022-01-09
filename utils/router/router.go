@@ -4,7 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/larien/potato/utils/router/middlewares"
 )
+
+const adminPrefix = "/admin"
 
 func New(routes Routes) *mux.Router {
 	router := mux.NewRouter()
@@ -13,6 +16,13 @@ func New(routes Routes) *mux.Router {
 	router.HandleFunc("/health", healthcheck).Methods(http.MethodGet)
 
 	for _, route := range routes {
+		if route.IsAdmin {
+			route.Handler = middlewares.Use(route.Handler, middlewares.IsAdmin)
+			route.Path = adminPrefix + route.Path
+		}
+
+		route.Handler = middlewares.Use(route.Handler, route.Middlewares...)
+
 		router.
 			Methods(route.Method).
 			Path(route.Path).
