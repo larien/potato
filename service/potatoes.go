@@ -3,94 +3,112 @@ package service
 import (
 	"errors"
 	"log"
-	"sync"
 	"time"
 
 	"github.com/larien/potato/utils/request/params"
 )
 
 var (
-	list map[string]Potato
-	lock sync.RWMutex
-
-	ErrAlreadyExists = errors.New("potato already exists")
 	ErrNotFound      = errors.New("potato not found")
+	ErrAlreadyExists = errors.New("potato already exists")
 )
 
 type Potatoes interface {
-	List(params params.QueryParams) ([]Potato, error)
-	Get(id string) Potato
+	List(params params.Queries) ([]Potato, error)
+	Get(id string) (Potato, error)
 	Create(potato Potato) error
 	Update(potato Potato) error
 	Delete(id string) error
 }
 
-type potatoes struct{}
-
-func New() Potatoes {
-	if list == nil {
-		list = make(map[string]Potato)
-	}
-	return potatoes{}
+type potatoes struct {
+	store store
 }
 
-func (p potatoes) List(params params.QueryParams) ([]Potato, error) {
-	var result []Potato
-	for _, potato := range list {
-		result = append(result, potato)
+func New() Potatoes {
+	return potatoes{
+		store: newStore(),
 	}
+}
+
+func (p potatoes) List(params params.Queries) ([]Potato, error) {
+	var result []Potato
+
+	raws, err := p.store.list(params)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, raw := range raws {
+		result = append(result, newPotato(raw))
+	}
+
 	return result, nil
 }
 
-func (p potatoes) Get(id string) Potato {
-	potato, ok := list[id]
-	if !ok {
-		return Potato{}
+func (p potatoes) Get(id string) (Potato, error) {
+	raws, err := p.store.getByIDs([]string{id})
+	if err != nil {
+		return Potato{}, err
 	}
-	return potato
+
+	if !raws[id].Active {
+		return Potato{}, ErrNotFound
+	}
+
+	return newPotato(raws[id]), nil
 }
 
 func (p potatoes) Create(potato Potato) error {
-	lock.Lock()
-	defer lock.Unlock()
+	potato.AddedAt = time.Now()
+	potato.LastModifiedAt = potato.AddedAt
 
-	if _, ok := list[potato.Name]; ok {
+	err := p.store.create(newRaw(potato))
+	if err == nil {
+		log.Println("Created potato:", potato.Name)
+		return nil
+	}
+
+	if errors.Is(err, errAlreadyExists) {
 		return ErrAlreadyExists
 	}
 
-	potato.AddedAt = time.Now()
-	potato.LastModifiedAt = potato.AddedAt
-	list[potato.Name] = potato
-	log.Println("Created potato:", potato.Name)
-
-	return nil
+	return err
 }
 
 func (p potatoes) Update(potato Potato) error {
-	lock.Lock()
-	defer lock.Unlock()
+	raws, err := p.store.getByIDs([]string{potato.Name})
+	if err != nil {
+		return err
+	}
 
-	if _, ok := list[potato.Name]; !ok {
+	oldPotato := newPotato(raws[potato.Name])
+	potato.AddedAt = oldPotato.AddedAt
+	potato.LastModifiedAt = time.Now()
+
+	err = p.store.update(newRaw(potato))
+	if err == nil {
+		log.Println("Updated potato:", potato.Name)
+		return nil
+	}
+
+	if errors.Is(err, errNotFound) {
 		return ErrNotFound
 	}
 
-	potato.LastModifiedAt = time.Now()
-	list[potato.Name] = potato
-	log.Println("Updated potato:", potato.Name)
-
-	return nil
+	return err
 }
 
 func (p potatoes) Delete(id string) error {
-	lock.Lock()
-	defer lock.Unlock()
+	err := p.store.delete(id)
+	if err == nil {
+		log.Println("Deleted potato:", id)
+		return nil
+	}
 
-	if _, ok := list[id]; !ok {
+	if errors.Is(err, errNotFound) {
 		return ErrNotFound
 	}
 
-	delete(list, id)
-	log.Println("Deleted potato:", id)
-
-	return nil
+	return err
 }

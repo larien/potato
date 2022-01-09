@@ -12,7 +12,7 @@ const (
 	defaultPage         = 1
 )
 
-type QueryParams struct {
+type Queries struct {
 	Search Search
 }
 
@@ -21,10 +21,10 @@ type Search struct {
 	Page         int
 }
 
-func New(r *http.Request) QueryParams {
+func New(r *http.Request) Queries {
 	query := r.URL.Query()
 
-	return QueryParams{
+	return Queries{
 		Search: Search{
 			ItemsPerPage: parseInt(query.Get("itemsPerPage"), defaultItemsPerPage),
 			Page:         parseInt(query.Get("page"), defaultPage),

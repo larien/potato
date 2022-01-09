@@ -6,21 +6,21 @@ import (
 )
 
 type mockPotatoes struct {
-	fnGet    func(id string) service.Potato
-	fnList   func(params params.QueryParams) ([]service.Potato, error)
+	fnGet    func(id string) (service.Potato, error)
+	fnList   func(params params.Queries) ([]service.Potato, error)
 	fnCreate func(potato service.Potato) error
 	fnUpdate func(potato service.Potato) error
 	fnDelete func(id string) error
 }
 
-func (m mockPotatoes) Get(id string) service.Potato {
+func (m mockPotatoes) Get(id string) (service.Potato, error) {
 	if m.fnGet == nil {
-		return service.Potato{}
+		return service.Potato{}, nil
 	}
 	return m.fnGet(id)
 }
 
-func (m mockPotatoes) List(params params.QueryParams) ([]service.Potato, error) {
+func (m mockPotatoes) List(params params.Queries) ([]service.Potato, error) {
 	if m.fnList == nil {
 		return []service.Potato{}, nil
 	}
