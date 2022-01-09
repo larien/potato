@@ -68,12 +68,26 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
    - Middlewares
 13. Monitor requests
    - Observability
-?. Prevent other services from explosion
-   - Circuit breaker
+     - Tracing
+     - Logging
+     - Metrics
 ?. Enable profiling
    -  pprof
    -  profiling
 ?. Implement an actual database
 ?. Improve response performance
-   - cache
+   - Cache
 ?. Authorization/Authentication
+?. Stability patterns
+   - Context
+   - Circuit Breaker
+   - Debounce
+   - Retry
+   - Throttle
+   - Timeout
+   - Singleflight
+?. Concurrency patterns
+   - Fan-In
+   - Fan-Out
+   - Future
+   - Sharding
