@@ -6,6 +6,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const adminPrefix = "/admin"
+
 func New(routes Routes) *mux.Router {
 	router := mux.NewRouter()
 	router.StrictSlash(true)
@@ -13,6 +15,10 @@ func New(routes Routes) *mux.Router {
 	router.HandleFunc("/health", healthcheck).Methods(http.MethodGet)
 
 	for _, route := range routes {
+		if route.IsAdmin {
+			route.Path = adminPrefix + route.Path
+		}
+
 		router.
 			Methods(route.Method).
 			Path(route.Path).

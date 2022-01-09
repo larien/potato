@@ -9,4 +9,5 @@ type Route struct {
 	Path    string
 	Method  string
 	Handler http.HandlerFunc
+	IsAdmin bool
 }
