@@ -1,16 +1,32 @@
 package kvs
 
-import "sync"
+import (
+	"log"
+	"sync"
+)
+
+var store *KeyValueStore
 
 type KeyValueStore struct {
 	sync.RWMutex
 	Data map[string]interface{}
 }
 
+func New() *KeyValueStore {
+	if store == nil {
+		store = &KeyValueStore{
+			Data: make(map[string]interface{}),
+		}
+	}
+	return store
+}
+
 func (kvs *KeyValueStore) GetAll() map[string]interface{} {
 	kvs.RLock()
 	defer kvs.RUnlock()
-	return kvs.Data
+	log.Println(kvs.Data)
+	r := kvs.Data
+	return r
 }
 
 func (kvs *KeyValueStore) Get(key string) interface{} {

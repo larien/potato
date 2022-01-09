@@ -7,7 +7,10 @@ import (
 	"github.com/larien/potato/utils/request/params"
 )
 
-var errNotFound = errors.New("not found")
+var (
+	errNotFound      = errors.New("not found")
+	errAlreadyExists = errors.New("already exists")
+)
 
 type store interface {
 	list(params params.Queries) (raws, error)
@@ -22,10 +25,12 @@ type potatoStore struct {
 }
 
 func newStore() store {
-	return potatoStore{}
+	return &potatoStore{
+		kvs: kvs.New(),
+	}
 }
 
-func (s potatoStore) list(params params.Queries) (raws, error) {
+func (s *potatoStore) list(params params.Queries) (raws, error) {
 	results := s.kvs.GetAll()
 
 	raws := make(raws, len(results))
@@ -40,12 +45,12 @@ func (s potatoStore) list(params params.Queries) (raws, error) {
 	return raws, nil
 }
 
-func (s potatoStore) getByIDs(ids []string) (raws, error) {
+func (s *potatoStore) getByIDs(ids []string) (raws, error) {
 	raws := make(raws, len(ids))
 
 	for _, id := range ids {
-		r := s.kvs.Get(id).(raw)
-		if r.Name == "" || !r.Active {
+		r, ok := s.kvs.Get(id).(raw)
+		if !ok && r.Name == "" && !r.Active {
 			return nil, errNotFound
 		}
 		raws[r.Name] = r
@@ -54,13 +59,20 @@ func (s potatoStore) getByIDs(ids []string) (raws, error) {
 	return raws, nil
 }
 
-func (s potatoStore) create(raw raw) error {
-	s.kvs.Set(raw.Name, raw)
+func (s *potatoStore) create(r raw) error {
+	result, ok := s.kvs.Get(r.Name).(raw)
+	if ok && result.Name != "" && result.Active {
+		return errAlreadyExists
+	}
+
+	r.Active = true
+
+	s.kvs.Set(r.Name, r)
 
 	return nil
 }
 
-func (s potatoStore) update(r raw) error {
+func (s *potatoStore) update(r raw) error {
 	result := s.kvs.Get(r.Name).(raw)
 	if result.Name == "" || !result.Active {
 		return errNotFound
@@ -71,7 +83,7 @@ func (s potatoStore) update(r raw) error {
 	return nil
 }
 
-func (s potatoStore) delete(id string) error {
+func (s *potatoStore) delete(id string) error {
 	result := s.kvs.Get(id).(raw)
 	if result.Name == "" || !result.Active {
 		return errNotFound

@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	ErrAlreadyExists = errors.New("potato already exists")
 	ErrNotFound      = errors.New("potato not found")
+	ErrAlreadyExists = errors.New("potato already exists")
 )
 
 type Potatoes interface {
@@ -33,16 +33,16 @@ func New() Potatoes {
 
 func (p potatoes) List(params params.Queries) ([]Potato, error) {
 	var result []Potato
+
 	raws, err := p.store.list(params)
 	if err != nil {
 		return nil, err
 	}
+
 	for _, raw := range raws {
-		if raw.Active {
-			continue
-		}
 		result = append(result, newPotato(raw))
 	}
+
 	return result, nil
 }
 
@@ -51,30 +51,29 @@ func (p potatoes) Get(id string) (Potato, error) {
 	if err != nil {
 		return Potato{}, err
 	}
+
 	if !raws[id].Active {
 		return Potato{}, ErrNotFound
 	}
+
 	return newPotato(raws[id]), nil
 }
 
 func (p potatoes) Create(potato Potato) error {
-	raws, err := p.store.list(params.Queries{})
-	if err != nil {
-		return err
-	}
-
-	existingPotato, ok := raws[potato.Name]
-	if ok && existingPotato.Active {
-		return ErrAlreadyExists
-	}
-
 	potato.AddedAt = time.Now()
 	potato.LastModifiedAt = potato.AddedAt
 
-	p.store.create(newRaw(potato))
-	log.Println("Created potato:", potato.Name)
+	err := p.store.create(newRaw(potato))
+	if err == nil {
+		log.Println("Created potato:", potato.Name)
+		return nil
+	}
 
-	return nil
+	if errors.Is(err, errAlreadyExists) {
+		return ErrAlreadyExists
+	}
+
+	return err
 }
 
 func (p potatoes) Update(potato Potato) error {
@@ -83,38 +82,33 @@ func (p potatoes) Update(potato Potato) error {
 		return err
 	}
 
-	raw, ok := raws[potato.Name]
-	if !ok || (ok && !raw.Active) {
-		return ErrNotFound
-	}
-
-	oldPotato := newPotato(raw)
+	oldPotato := newPotato(raws[potato.Name])
 	potato.AddedAt = oldPotato.AddedAt
 	potato.LastModifiedAt = time.Now()
 
-	if err := p.store.update(newRaw(potato)); err != nil {
-		return err
-	}
-	log.Println("Updated potato:", potato.Name)
-
-	return nil
-}
-
-func (p potatoes) Delete(id string) error {
-	raws, err := p.store.getByIDs([]string{id})
-	if err != nil {
-		return err
+	err = p.store.update(newRaw(potato))
+	if err == nil {
+		log.Println("Updated potato:", potato.Name)
+		return nil
 	}
 
-	_, ok := raws[id]
-	if !ok {
+	if errors.Is(err, errNotFound) {
 		return ErrNotFound
 	}
 
-	if err := p.store.delete(id); err != nil {
-		return err
-	}
-	log.Println("Deleted potato:", id)
+	return err
+}
 
-	return nil
+func (p potatoes) Delete(id string) error {
+	err := p.store.delete(id)
+	if err == nil {
+		log.Println("Deleted potato:", id)
+		return nil
+	}
+
+	if errors.Is(err, errNotFound) {
+		return ErrNotFound
+	}
+
+	return err
 }
