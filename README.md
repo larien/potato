@@ -16,8 +16,7 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 - [X] 10. Isolate service logic
 - [X] 11. Store data
 - [ ] 12. Enable admin permissions
-- [ ] 13. Enable server debugging
-- [ ] 14. Monitor requests
+- [ ] 13. Monitor requests
 - [ ] ?. Prevent other services from explosion
 - [ ] ?. Enable profiling
 - [ ] ?. Improve response performance
@@ -63,15 +62,14 @@ This project is a Go skelethon to be used to develop new microservices. I'm stil
 11. Store data
    - Repository pattern
    - Dependency injection
+   - KVS
 12. Enable admin permissions
    - Admin route
    - Middlewares
    - Authorization
    - Authentication
-13. Enable server debugging
-   - Logging
-14. Monitor requests
-   - Tracing
+13. Monitor requests
+   - Observability
 ?. Prevent other services from explosion
    - Circuit breaker
 ?. Enable profiling
