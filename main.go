@@ -7,7 +7,7 @@ import (
 
 	"github.com/larien/potato/config"
 	"github.com/larien/potato/handler"
-	"github.com/larien/potato/utils/router"
+	"github.com/larien/potato/internal/router"
 )
 
 func main() {

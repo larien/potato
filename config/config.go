@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/larien/potato/utils/config"
+	"github.com/larien/potato/internal/config"
 )
 
 type Config struct {

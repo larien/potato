@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/larien/potato/internal/request/params"
 	"github.com/larien/potato/service"
-	"github.com/larien/potato/utils/request/params"
 )
 
 var (
