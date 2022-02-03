@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/larien/potato/utils/router"
+	"github.com/larien/potato/internal/router"
 )
 
 var Routes = router.Routes{

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/larien/potato/internal/request/params"
 	"github.com/larien/potato/service"
-	"github.com/larien/potato/utils/request/params"
 )
 
 func TestGetPotatoes(t *testing.T) {

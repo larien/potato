@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/larien/potato/utils/request/params"
+	"github.com/larien/potato/internal/request/params"
 )
 
 var (

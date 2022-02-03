@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/larien/potato/utils/router/middlewares"
+	"github.com/larien/potato/internal/router/middlewares"
 )
 
 const adminPrefix = "/admin"

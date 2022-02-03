@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 
-	"github.com/larien/potato/utils/drivers/kvs"
-	"github.com/larien/potato/utils/request/params"
+	"github.com/larien/potato/internal/drivers/kvs"
+	"github.com/larien/potato/internal/request/params"
 )
 
 var (

@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"github.com/larien/potato/internal/request/params"
 	"github.com/larien/potato/service"
-	"github.com/larien/potato/utils/request/params"
 )
 
 type mockPotatoes struct {
